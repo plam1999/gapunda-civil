@@ -1,0 +1,329 @@
+/* ========== Custom CSS — animations, patterns, lightbox ========== */
+
+/* Smooth scroll with sticky nav offset */
+html {
+  scroll-padding-top: 0;
+}
+
+/* Aboriginal dot pattern accent */
+.dot-pattern {
+  background-image:
+    radial-gradient(circle, #E8731A 1.5px, transparent 1.5px),
+    radial-gradient(circle, #D4A96A 1px, transparent 1px),
+    radial-gradient(circle, #8B6F47 1px, transparent 1px);
+  background-size: 24px 24px, 36px 36px, 18px 18px;
+  background-position: 0 0, 12px 12px, 6px 6px;
+}
+
+/* ========== Scroll Reveal Animations ========== */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Directional reveals */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-left.visible,
+.reveal-right.visible,
+.reveal-scale.visible {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+/* Staggered delays */
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+.reveal-delay-4 { transition-delay: 0.6s; }
+
+/* ========== Hero Animations ========== */
+.scroll-indicator {
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+}
+
+/* Subtle float for hero logo */
+.hero-float {
+  animation: heroFloat 6s ease-in-out infinite;
+}
+
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ========== Gradient animation for section accents ========== */
+.gradient-shift {
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ========== Navbar ========== */
+#navbar {
+  transition: background-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+/* HOME page nav */
+.page-home #navbar {
+  background: transparent;
+}
+
+.page-home #navbar .nav-link {
+  color: #2D2D2D;
+}
+
+.page-home #navbar .nav-link:hover {
+  color: #E8731A;
+}
+
+.page-home #navbar .hamburger-line {
+  background-color: #2D2D2D;
+}
+
+.page-home #navbar.scrolled {
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+}
+
+.page-home #navbar.scrolled .nav-link {
+  color: #2D2D2D;
+}
+
+.page-home #navbar.scrolled .nav-link:hover {
+  color: #E8731A;
+}
+
+/* SUBPAGES nav */
+.page-subpage #navbar {
+  background-color: #2D2D2D;
+}
+
+.page-subpage #navbar .nav-link {
+  color: #d1d5db;
+}
+
+.page-subpage #navbar .nav-link:hover {
+  color: #E8731A;
+}
+
+.page-subpage #navbar .hamburger-line {
+  background-color: #FFFFFF;
+}
+
+.page-subpage #navbar.scrolled {
+  background-color: rgba(45, 45, 45, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Logo invert for dark backgrounds */
+.page-subpage .header-logo {
+  filter: brightness(0) invert(1);
+}
+
+.footer-logo-invert {
+  filter: brightness(0) invert(1);
+}
+
+/* Active nav link with underline */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #E8731A;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+.nav-link.active {
+  color: #E8731A !important;
+}
+
+/* ========== Mobile Menu ========== */
+#mobile-menu.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Hamburger animation */
+.menu-open .hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translate(4px, 4px);
+}
+
+.menu-open .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-open .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translate(4px, -4px);
+}
+
+/* Body scroll lock */
+body.menu-open,
+body.lightbox-open {
+  overflow: hidden;
+}
+
+/* ========== Project Cards ========== */
+.project-card {
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.project-card.hidden-card {
+  display: none;
+}
+
+/* Filter button active state */
+.filter-btn {
+  transition: all 0.3s ease;
+}
+
+.filter-btn.active {
+  background-color: #E8731A;
+  color: white;
+  box-shadow: 0 4px 12px rgba(232, 115, 26, 0.3);
+}
+
+/* ========== Counter Animation ========== */
+.counter {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ========== Form Focus States ========== */
+input:focus, select:focus, textarea:focus {
+  border-color: #E8731A;
+  box-shadow: 0 0 0 3px rgba(232, 115, 26, 0.15);
+}
+
+/* ========== Lightbox Gallery ========== */
+#lightbox {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+#lightbox.active {
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#lightbox-content img {
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+#lightbox-content video {
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+#lightbox-content {
+  transform: scale(0.9);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#lightbox.active #lightbox-content {
+  transform: scale(1);
+}
+
+/* ========== Glow pulse for CTA buttons ========== */
+.glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 115, 26, 0); }
+  50% { box-shadow: 0 0 20px 4px rgba(232, 115, 26, 0.15); }
+}
+
+/* ========== Stat counter underline grow ========== */
+.counter-line {
+  width: 0;
+  height: 3px;
+  background: #E8731A;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+  border-radius: 2px;
+}
+
+.counter-line.visible {
+  width: 100%;
+}
+
+/* ========== Logo with white text — dark outline via drop-shadow ========== */
+.logo-dark-outline {
+  filter:
+    drop-shadow(1px 0 0 #2D2D2D)
+    drop-shadow(-1px 0 0 #2D2D2D)
+    drop-shadow(0 1px 0 #2D2D2D)
+    drop-shadow(0 -1px 0 #2D2D2D);
+}
+
+/* ========== Selection Color ========== */
+::selection {
+  background-color: #E8731A;
+  color: white;
+}
+
+/* ========== Smooth section transitions ========== */
+section {
+  position: relative;
+}
+
+/* Orange accent line between sections */
+.section-divider {
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, #E8731A 50%, transparent 100%);
+  opacity: 0.3;
+}
