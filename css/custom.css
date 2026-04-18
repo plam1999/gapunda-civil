@@ -310,6 +310,55 @@ input:focus, select:focus, textarea:focus {
     drop-shadow(0 -1px 0 #2D2D2D);
 }
 
+/* ========== Image Loading States ========== */
+
+/* Dark shimmer — for dark section backgrounds (projects gallery) */
+.img-loading {
+  position: relative;
+  background: linear-gradient(90deg, #3D3D3D 0%, #4D4D4D 50%, #3D3D3D 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Light shimmer — for light section backgrounds (client cards, about image, home project cards) */
+.img-loading-light {
+  position: relative;
+  background: linear-gradient(90deg, #E8E2D6 0%, #F5F0E5 50%, #E8E2D6 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Universal image fade-in — applies to any <img class="img-fade"> */
+.img-fade,
+.gallery-img {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.img-fade.loaded,
+.gallery-img.loaded {
+  opacity: 1;
+}
+
+/* Lightbox spinner */
+.lightbox-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #E8731A;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* ========== Selection Color ========== */
 ::selection {
   background-color: #E8731A;

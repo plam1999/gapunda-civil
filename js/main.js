@@ -179,9 +179,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const video = item.querySelector('video');
 
       if (img) {
-        lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt || 'Project photo'}">`;
+        lightboxContent.innerHTML = `
+          <div class="lightbox-spinner absolute"></div>
+          <img src="${img.src}" alt="${img.alt || 'Project photo'}" style="opacity:0;transition:opacity 0.3s ease" onload="this.style.opacity='1';this.previousElementSibling.remove();">`;
       } else if (video) {
-        lightboxContent.innerHTML = `<video src="${video.src}" controls autoplay class="w-full"></video>`;
+        lightboxContent.innerHTML = `
+          <div class="lightbox-spinner absolute"></div>
+          <video src="${video.src}" controls autoplay class="w-full" style="opacity:0;transition:opacity 0.3s ease" onloadeddata="this.style.opacity='1';this.previousElementSibling.remove();"></video>`;
       } else {
         // Placeholder — show a larger version of the gradient
         const gradientClasses = item.className.match(/from-[\w-]+ to-[\w-]+/);
@@ -250,6 +254,18 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.target === lightbox) closeLightbox();
     });
   }
+
+  // ========== Image Fade-in on Load ==========
+  // Adds .loaded class to .img-fade images when they finish loading (handles cached images too)
+  const fadeImages = document.querySelectorAll('img.img-fade');
+  fadeImages.forEach(img => {
+    if (img.complete && img.naturalHeight !== 0) {
+      img.classList.add('loaded');
+    } else {
+      img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
+      img.addEventListener('error', () => img.classList.add('loaded'), { once: true });
+    }
+  });
 
   // ========== Phone Field — Numbers Only ==========
   const phoneInput = document.getElementById('phone');

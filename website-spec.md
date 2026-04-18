@@ -48,6 +48,7 @@ Search queries users may type: "Gapunda" (primary), "Gapunda Civil" (secondary),
 gapunda-civil/
 ├── index.html                              # Main single-page website (7 sections + footer) — includes SEO meta + JSON-LD + FAQ schema
 ├── project.html                            # Data-driven project detail template + BreadcrumbList schema
+├── privacy.html                            # Privacy Policy page (Australian Privacy Principles compliant)
 ├── 404.html                                # Custom not-found page (matches site design)
 ├── sitemap.xml                             # SEO sitemap (home + 6 project URLs)
 ├── robots.txt                              # Allows all crawlers, references sitemap
@@ -389,8 +390,8 @@ PROJECTS['slug'] = {
   location: 'Location, NT',
   paragraphs: ['Para 1', 'Para 2', 'Para 3'],
   gallery: [
-    { type: 'image', src: '' },   // Empty src = gradient placeholder
-    { type: 'video', src: '' },   // Video type shows play button
+    { type: 'image', src: '' },                              // Empty src = gradient placeholder
+    { type: 'video', src: '', poster: '' },                  // Video type shows play button; poster is optional thumbnail
   ]
 }
 ```
@@ -405,6 +406,53 @@ All 6 projects have 6 gallery items each (5 images + 1 video), all currently pla
 - For placeholders (no `src`): shows enlarged gradient with "Photo placeholder" text
 - Body scroll locks (`body.lightbox-open { overflow: hidden }`)
 - CSS transitions: fade in (opacity 0→1) + scale (0.9→1) with cubic-bezier ease over 400ms
+- **Loading spinner** (`.lightbox-spinner`) shown while large image/video loads, auto-removed on `onload`/`onloadeddata` event. Image/video fades in (opacity 0→1) when ready.
+
+### Image Loading System (entire site)
+
+Three classes are available for different image loading scenarios:
+
+**1. `.img-fade` (universal fade-in)** — Apply to any `<img>` for smooth opacity 0→1 transition on load. JS in `main.js` automatically adds `.loaded` class when the image finishes loading (handles cached images correctly). **Currently applied to all 8 client logos.** Add this to any new image to get a polished fade-in.
+
+**2. `.img-loading` (dark shimmer skeleton)** — Charcoal shimmer gradient for dark section backgrounds. Used on project gallery in `project.html`. Parent element gets this class; the `<img>` inside has `.gallery-img` + `onload` handler that adds `.loaded` (fades in) and removes `.img-loading` from parent.
+
+**3. `.img-loading-light` (light shimmer skeleton)** — Cream-toned shimmer for light section backgrounds. Use when adding real images to:
+- About section (currently gradient placeholder)
+- Home page project cards (currently gradient placeholders)
+- Any light-background image slot
+
+### Gallery-specific features
+- Videos use `preload="metadata"` so only the first frame loads until user opens lightbox
+- Videos support optional `poster` field in `projects-data.js` for thumbnail image before playback
+- Lightbox shows `.lightbox-spinner` (48px orange spinner) while large image/video loads, auto-removes on `onload`
+
+### Adding real images later (pattern to follow)
+
+When swapping a gradient placeholder for a real image:
+
+```html
+<!-- Light background (About, home project cards) -->
+<div class="img-loading-light rounded-xl overflow-hidden aspect-[4/3]">
+  <img src="./assets/images/my-photo.jpg"
+       alt="Descriptive alt"
+       loading="lazy"
+       decoding="async"
+       onload="this.classList.add('loaded');this.parentNode.classList.remove('img-loading-light');"
+       class="img-fade w-full h-full object-cover">
+</div>
+```
+
+```html
+<!-- Dark background (project gallery) -->
+<div class="img-loading rounded-xl overflow-hidden aspect-square">
+  <img src="./assets/images/my-photo.jpg"
+       alt="Descriptive alt"
+       loading="lazy"
+       decoding="async"
+       onload="this.classList.add('loaded');this.parentNode.classList.remove('img-loading');"
+       class="gallery-img w-full h-full object-cover absolute inset-0">
+</div>
+```
 
 ---
 
@@ -474,6 +522,10 @@ Only contains styles that Tailwind utility classes can't express. All layout, sp
 | **Form focus** | `input/select/textarea:focus` orange border + ring |
 | **Lightbox** | Scale 0.9→1 with cubic-bezier on open. Fade + pointer-events transition |
 | **Logo dark outline** | `.logo-dark-outline` — 4x `drop-shadow(0.5px)` in `rgba(45,45,45,0.4)` for white-text logos on white bg (used on Fulton Hogan) |
+| **Shimmer (dark bg)** | `.img-loading` — charcoal animated gradient (`@keyframes shimmer` 1.5s) for dark-bg image placeholders (gallery) |
+| **Shimmer (light bg)** | `.img-loading-light` — cream-toned animated gradient for light-bg image placeholders (about, home project cards) |
+| **Image fade-in (universal)** | `.img-fade` on any `<img>` — opacity 0→1 on load. JS in main.js auto-applies `.loaded`. Also used on `.gallery-img` |
+| **Lightbox spinner** | `.lightbox-spinner` — 48px orange circular spinner (`@keyframes spin`) shown while large images/videos load in lightbox |
 | **Section divider** | `.section-divider` — thin orange gradient line (available for use between sections) |
 | **Selection** | `::selection` orange bg, white text |
 | **Scroll lock** | `body.menu-open, body.lightbox-open { overflow: hidden }` |
@@ -676,7 +728,7 @@ These must be done BY THE OWNER — Claude cannot do them:
 
 ## Known Limitations & Notes
 
-- **Logo file size**: `assets/images/company-logo.png` is **2.6 MB** — this significantly hurts PageSpeed score and mobile loading. Should be compressed to <200KB using https://tinypng.com or similar. Preserve transparency.
+- **Logo file size**: `assets/images/company-logo.png` is currently ~705 KB (compressed from original 2.6 MB). Further compression to <200 KB recommended using https://tinypng.com or converting to WebP via https://squoosh.app for optimal PageSpeed score.
 - **Tailwind CDN**: ~300KB JS payload on first load. For production optimization, switch to Tailwind CLI build.
 - **Web3Forms**: Free tier = 250 emails/month. Access key is active and configured.
 - **Project photos**: All 6 projects use gradient placeholders. Replace with real images when available.

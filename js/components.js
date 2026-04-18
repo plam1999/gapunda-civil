@@ -95,7 +95,10 @@ function renderFooter() {
       </div>
       <div class="flex flex-col sm:flex-row items-center justify-between pt-6 gap-4">
         <p class="text-gray-500 text-xs">&copy; 2026 Gapunda Civil Construction. All rights reserved.</p>
-        <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="text-gray-500 hover:text-orange text-xs font-medium transition-colors">Back to Top &uarr;</a>
+        <div class="flex items-center gap-5">
+          <a href="${base}privacy.html" class="text-gray-500 hover:text-orange text-xs font-medium transition-colors">Privacy Policy</a>
+          <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="text-gray-500 hover:text-orange text-xs font-medium transition-colors">Back to Top &uarr;</a>
+        </div>
       </div>
     </div>
   </footer>`;
