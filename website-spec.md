@@ -4,7 +4,8 @@
 
 ## Company Info
 
-- **Company**: Gapunda Civil Construction (Indigenous-owned)
+- **Company full name**: Gapunda Civil Construction (Indigenous-owned)
+- **Short name**: Gapunda
 - **Location**: 866 Stuart Highway, Pinelands NT 0829
 - **Email**: admin@gapundacivil.com.au
 - **Hours**: Monday–Saturday 7:00 AM – 6:00 PM, Sunday Closed
@@ -12,6 +13,19 @@
 - **Clients**: Fulton Hogan, Boskalis, Territory Proud, Smithbridge, Sitzler, Ritek, John Holland, Civmec
 - **GitHub Repo**: https://github.com/plam1999/gapunda-civil.git
 - **Live URL**: https://plam1999.github.io/gapunda-civil/
+
+### Naming convention (IMPORTANT)
+
+**Only these two names are used in UI / visible text**:
+- **Full**: "Gapunda Civil Construction" (formal, first mention, headers, legal)
+- **Short**: "Gapunda" (conversational, repeated mentions, headings)
+
+**"Gapunda Civil" is NEVER used in visible UI text**. It's reserved for:
+- Structured data `alternateName` array (for Google entity matching)
+- Meta keywords
+- FAQ schema answers (invisible, helps rich snippets match branded searches)
+
+Search queries users may type: "Gapunda" (primary), "Gapunda Civil" (secondary), "Gapunda Civil Construction" (full). All three are covered by structured data + keywords for SEO matching, but only "Gapunda" and "Gapunda Civil Construction" appear in UI.
 
 ---
 
@@ -32,8 +46,12 @@
 
 ```
 gapunda-civil/
-├── index.html                              # Main single-page website (7 sections + footer)
-├── project.html                            # Data-driven project detail template
+├── index.html                              # Main single-page website (7 sections + footer) — includes SEO meta + JSON-LD + FAQ schema
+├── project.html                            # Data-driven project detail template + BreadcrumbList schema
+├── 404.html                                # Custom not-found page (matches site design)
+├── sitemap.xml                             # SEO sitemap (home + 6 project URLs)
+├── robots.txt                              # Allows all crawlers, references sitemap
+├── manifest.json                           # Web app manifest (PWA / Add to Home Screen)
 ├── .nojekyll                               # Empty file — tells GitHub Pages to skip Jekyll
 ├── README.md
 ├── website-spec.md                         # This file
@@ -563,12 +581,106 @@ Update the iframe `src` URL in `index.html` contact section (~line 496). Format:
 
 ---
 
+## SEO Setup
+
+The site is **fully optimized for search engines** with:
+
+### On-page SEO (already implemented)
+- **`lang="en-AU"`** on `<html>` — tells Google this is Australian English (geo-targeting signal)
+- **Brand-optimized title** — "Gapunda Civil Construction | Gapunda Darwin NT" (full name + short name for both SERP displays and brand recognition)
+- **Brand-optimized meta description** — leads with "Gapunda Civil Construction", uses "Gapunda" short form subsequently
+- **Brand variations in structured data only** — `alternateName: ["Gapunda", "Gapunda Civil", "Gapunda Civil Construction NT", "Gapunda Darwin"]` so Google knows all these refer to the same entity. "Gapunda Civil" stays in SEO only, never in UI.
+- **Brand prominence in UI** — "Gapunda" (short) or "Gapunda Civil Construction" (full) used in: H1, hero subtitle, About heading ("About Gapunda"), About paragraphs (`<strong>Gapunda Civil Construction</strong>` first mention, then "Gapunda" short form)
+- **Dedicated "What is Gapunda?" FAQ** — directly targets users typing "Gapunda" into Google (rich snippet target)
+- **Meta keywords** — comprehensive list in `index.html <head>`
+- **Theme color meta** — `#E8731A` (orange) for mobile browser chrome
+- **Geo meta tags** — `geo.region` (AU-NT), `geo.position` (lat/long), `ICBM` for local search
+- **Canonical URL** — points to primary domain
+- **Open Graph tags** — for Facebook/LinkedIn sharing (title, description, image, locale)
+- **Twitter Card tags** — `summary_large_image` with logo
+- **Structured data (JSON-LD)** — 7 schemas total:
+  - `GeneralContractor` (LocalBusiness subtype) in `index.html` — address, geo coords, opening hours, service area (Darwin/Palmerston/Katherine), services catalog, knowsAbout
+  - `WebSite` in `index.html` — site-level metadata
+  - 3× `Service` schemas in `index.html` (inside `@graph`) — individual Concrete Works / Civil Infrastructure / Plant Hire services for specific service-query ranking
+  - `FAQPage` in `index.html` — 6 Q&A pairs for rich snippets in Google results
+  - `BreadcrumbList` in `project.html` — populated dynamically with current project (Home → Projects → [Project Name])
+  - `CreativeWork` in `project.html` — injected dynamically per project with title, description, location, client, year
+  - Dynamic `<link rel="canonical">` on `project.html` — set to the specific project URL
+- **Resource hints** — `preconnect` to Google Fonts + Tailwind CDN. `dns-prefetch` to web3forms.com + maps.google.com (faster form submit + map load)
+- **Visually hidden H1** — `<h1 class="sr-only">` in hero (logo is the visual title)
+- **Descriptive alt text** — all images; client logos include "— Gapunda Civil Construction client"
+- **Image dimensions** — `width`/`height` on all images (hero, logos, gallery) to prevent CLS
+- **`fetchpriority="high"`** on hero logo — tells browser to prioritize the LCP image
+- **`decoding="async"`** on all images — non-blocking image decode
+- **robots meta** — `index, follow, max-image-preview:large`
+- **Semantic HTML** — `<header role="banner">`, `<nav aria-label>`, `<main id="main-content">`, `<section aria-labelledby>`, `<footer role="contentinfo">`, proper H1→H2→H3 hierarchy
+- **ARIA labels** — nav, header, footer, mobile menu, all sections use `aria-labelledby` referencing their H2
+- **Accessible form** — fields use `aria-invalid="true"` on error, error messages use `role="alert"`, success message uses `role="status" aria-live="polite"` for screen reader announcements
+- **Skip-to-content link** — accessibility + SEO best practice (focus-visible)
+- **Preload hero logo** — `<link rel="preload" as="image">` optimizes LCP Core Web Vital
+- **Lazy-loaded images** — client logos, gallery images, footer logo use `loading="lazy"`
+
+### Technical SEO (already implemented)
+- **sitemap.xml** at root — lists homepage + all 6 project pages with priority/changefreq
+- **robots.txt** at root — allows all crawlers, links to sitemap
+- **manifest.json** — Web app manifest for "Add to Home Screen" on mobile (PWA-ready)
+- **404.html** — Custom not-found page matching site design (GitHub Pages serves this automatically on 404s). Has `noindex` meta.
+- **Mobile-friendly** — responsive design, touch targets ≥44px
+- **HTTPS** — GitHub Pages provides free SSL
+- **Performance** — static site, no database, relative paths, preconnected fonts, preloaded LCP image, fetchpriority on hero, async decoding on all images
+- **`.nojekyll`** — serves files as-is without Jekyll processing
+
+### User Action Items (required for first-page ranking)
+
+These must be done BY THE OWNER — Claude cannot do them:
+
+1. **Submit site to Google Search Console** (most important)
+   - Go to https://search.google.com/search-console
+   - Add property: `https://plam1999.github.io/gapunda-civil/`
+   - Verify via HTML tag (add `<meta name="google-site-verification" content="...">` to `<head>`)
+   - Submit sitemap: `https://plam1999.github.io/gapunda-civil/sitemap.xml`
+
+2. **Submit to Bing Webmaster Tools** — https://www.bing.com/webmasters
+
+3. **Create Google Business Profile** — https://business.google.com
+   - Register company at address 866 Stuart Highway, Pinelands NT 0829
+   - Add photos, services, hours, website link
+   - This is critical for local "near me" searches
+
+4. **Get backlinks** (highest impact on ranking):
+   - NT Indigenous Business Directory listings
+   - Industry association memberships (Civil Contractors Federation NT, MBANT)
+   - Supply Nation (if certified Indigenous business)
+   - Local NT business directories
+   - LinkedIn company page linking back to site
+
+5. **Consider a custom domain** (e.g., `gapundacivil.com.au`)
+   - GitHub Pages supports custom domains for free
+   - Add `CNAME` file with domain, configure DNS
+   - Better for branding and SEO than `plam1999.github.io`
+
+6. **Keep content fresh** — update project photos, add new projects, write blog posts or news
+
+### How to monitor SEO
+- **Google Search Console** — shows what queries bring traffic, ranking position, indexing issues
+- **Google Analytics** (free) — visitor stats (need to add tracking code)
+- **PageSpeed Insights** — https://pagespeed.web.dev (check Core Web Vitals)
+
+### Expected timeline for ranking
+- **Week 1-2**: Site gets indexed by Google after submission
+- **Month 1-3**: Initial ranking for branded searches ("Gapunda Civil")
+- **Month 3-6**: Ranking improves for location + service searches with backlinks
+- **Month 6-12**: First page for competitive keywords with continued SEO work
+
+---
+
 ## Known Limitations & Notes
 
+- **Logo file size**: `assets/images/company-logo.png` is **2.6 MB** — this significantly hurts PageSpeed score and mobile loading. Should be compressed to <200KB using https://tinypng.com or similar. Preserve transparency.
 - **Tailwind CDN**: ~300KB JS payload on first load. For production optimization, switch to Tailwind CLI build.
 - **Web3Forms**: Free tier = 250 emails/month. Access key is active and configured.
 - **Project photos**: All 6 projects use gradient placeholders. Replace with real images when available.
 - **About photo**: Placeholder gradient. Replace with company/team photo.
 - **Google Maps**: Uses basic query embed. For precise pin, generate embed URL from Google Maps share.
-- **SEO**: Basic meta tags and OG tags present. No sitemap.xml or robots.txt.
+- **Custom domain**: Currently on `plam1999.github.io/gapunda-civil/`. Setting a branded domain (e.g. `gapundacivil.com.au`) via GitHub Pages will improve SEO and trust.
 - **company-logo.jpg**: Old JPG version was deleted. Only PNG (transparent) version exists now at `assets/images/company-logo.png`.

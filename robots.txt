@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://plam1999.github.io/gapunda-civil/sitemap.xml

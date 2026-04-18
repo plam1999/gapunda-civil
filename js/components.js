@@ -31,17 +31,17 @@ function renderHeader() {
   ).join('');
 
   return `
-  <header id="navbar" class="fixed top-0 left-0 w-full z-50">
+  <header id="navbar" class="fixed top-0 left-0 w-full z-50" role="banner">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16 md:h-20">
-        <a href="${base}index.html" class="flex-shrink-0">
-          <img src="${base}assets/images/company-logo.png" alt="Gapunda Civil Construction" class="h-10 md:h-12 w-auto header-logo">
+        <a href="${base}index.html" class="flex-shrink-0" aria-label="Gapunda Civil Construction — Home">
+          <img src="${base}assets/images/company-logo.png" alt="Gapunda Civil Construction" width="150" height="48" decoding="async" class="h-10 md:h-12 w-auto header-logo">
         </a>
-        <nav class="hidden lg:flex items-center space-x-8">
+        <nav class="hidden lg:flex items-center space-x-8" aria-label="Primary navigation">
           ${desktopLinks}
           <a href="${base}index.html#contact" class="bg-orange hover:bg-orange-dark text-white px-5 py-2.5 rounded-md text-sm font-semibold transition-colors">Get a Quote</a>
         </nav>
-        <button id="menu-toggle" class="lg:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 z-50" aria-label="Toggle menu" aria-expanded="false">
+        <button id="menu-toggle" class="lg:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 z-50" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="mobile-menu">
           <span class="hamburger-line w-6 h-0.5 bg-charcoal transition-all duration-300"></span>
           <span class="hamburger-line w-6 h-0.5 bg-charcoal transition-all duration-300"></span>
           <span class="hamburger-line w-6 h-0.5 bg-charcoal transition-all duration-300"></span>
@@ -49,20 +49,20 @@ function renderHeader() {
       </div>
     </div>
   </header>
-  <div id="mobile-menu" class="fixed inset-0 z-[60] bg-charcoal-dark/95 backdrop-blur-sm flex flex-col items-center justify-center space-y-6 opacity-0 pointer-events-none transition-opacity duration-300 lg:hidden">
+  <nav id="mobile-menu" class="fixed inset-0 z-[60] bg-charcoal-dark/95 backdrop-blur-sm flex flex-col items-center justify-center space-y-6 opacity-0 pointer-events-none transition-opacity duration-300 lg:hidden" aria-label="Mobile navigation">
     ${mobileLinks}
     <a href="${base}index.html#contact" class="mobile-nav-link bg-orange hover:bg-orange-dark text-white px-8 py-3 rounded-md text-xl font-semibold transition-colors mt-4">Get a Quote</a>
-  </div>`;
+  </nav>`;
 }
 
 function renderFooter() {
   const base = getBasePath();
   return `
-  <footer class="bg-charcoal-dark pt-12 md:pt-16 pb-6">
+  <footer class="bg-charcoal-dark pt-12 md:pt-16 pb-6" role="contentinfo">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 pb-10 border-b border-white/10">
         <div>
-          <img src="${base}assets/images/company-logo.png" alt="Gapunda Civil Construction" class="h-10 w-auto mb-4 footer-logo-invert">
+          <img src="${base}assets/images/company-logo.png" alt="Gapunda Civil Construction" width="125" height="40" loading="lazy" decoding="async" class="h-10 w-auto mb-4 footer-logo-invert">
           <p class="text-gray-400 text-sm leading-relaxed">Proudly Indigenous-owned civil construction company delivering quality workmanship across the Northern Territory.</p>
         </div>
         <div>

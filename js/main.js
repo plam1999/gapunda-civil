@@ -267,10 +267,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function showFieldError(input, message) {
     input.classList.add('border-red-400', 'bg-red-50');
     input.classList.remove('border-gray-300', 'bg-white');
+    input.setAttribute('aria-invalid', 'true');
     let err = input.parentNode.querySelector('.field-error');
     if (!err) {
       err = document.createElement('p');
       err.className = 'field-error text-red-400 text-xs mt-1';
+      err.setAttribute('role', 'alert');
       input.parentNode.appendChild(err);
     }
     err.textContent = message;
@@ -279,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function clearFieldError(input) {
     input.classList.remove('border-red-400', 'bg-red-50');
     input.classList.add('border-gray-300', 'bg-white');
+    input.removeAttribute('aria-invalid');
     const err = input.parentNode.querySelector('.field-error');
     if (err) err.remove();
   }
